@@ -10,10 +10,7 @@ class SplashPage extends StatefulWidget {
   }
 }
 
-class _SplashPageState extends State<SplashPage>
-    with SingleTickerProviderStateMixin {
-  double height = 100;
-  double width = 100;
+class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
@@ -29,8 +26,8 @@ class _SplashPageState extends State<SplashPage>
       body: Container(
         child: Center(
           child: Container(
-            height: getDeviceHeight(context) * 0.23,
-            width: getDeviceWidth(context) * 0.23,
+            height: getDeviceHeight(context) * 0.30,
+            width: getDeviceWidth(context) * 0.30,
             child: Image.asset('assets/icon.png'),
           ),
         ),
