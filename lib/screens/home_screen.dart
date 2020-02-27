@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:twitter_clone/widgets/side_drawer.dart';
 import 'package:twitter_clone/helpers/dimensions.dart';
+import 'package:twitter_clone/helpers/dummy_user.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,8 +17,9 @@ class _HomeScreenState extends State<HomeScreen> {
   ScrollController _scrollBottomBarController =
       new ScrollController(); // set controller on scrolling
   bool isScrollingDown = false;
-  bool _show = true;
-  double _bottomBarOffset = 0;
+  // bool _show = true;
+  int bottom_navbar_index = 0;
+  final DummyUser du = DummyUser();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -29,13 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void showBottomBar() {
     setState(() {
-      _show = true;
+      _showAppbar = true;
     });
   }
 
   void hideBottomBar() {
     setState(() {
-      _show = false;
+      _showAppbar = false;
     });
   }
 
@@ -45,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ScrollDirection.reverse) {
         if (!isScrollingDown) {
           isScrollingDown = true;
-          _showAppbar = false;
           hideBottomBar();
         }
       }
@@ -53,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ScrollDirection.forward) {
         if (isScrollingDown) {
           isScrollingDown = false;
-          _showAppbar = true;
           showBottomBar();
         }
       }
@@ -117,13 +117,18 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _showAppbar
           ? AppBar(
               backgroundColor: Colors.white,
-              leading: Container(
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage('assets/avatar.png'),
-                  radius: 10.0,
-                ),
-              ),
+              leading: GestureDetector(
+                  onTap: () => _scaffoldKey.currentState.openDrawer(),
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(width: 10.0),
+                      CircleAvatar(
+                        radius: getDeviceHeight(context) * 0.025,
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: AssetImage(du.avatar),
+                      ),
+                    ],
+                  )),
               title: Text(
                 'Home',
                 style: TextStyle(color: Colors.black),
@@ -134,32 +139,32 @@ class _HomeScreenState extends State<HomeScreen> {
               preferredSize: Size(0.0, 0.0),
             ),
       bottomNavigationBar: Container(
-        height: getDeviceHeight(context) * 0.08,
+        height: getDeviceHeight(context) * 0.09,
         width: MediaQuery.of(context).size.width,
-        child: _show
-            ? BottomNavigationBar(
-                currentIndex: 0, // this will be set when a new tab is tapped
-                items: [
-                  BottomNavigationBarItem(
-                    icon: new Icon(Icons.home),
-                    title: new Text('Home'),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: new Icon(Icons.search),
-                    title: new Text('Search'),
-                  ),
-                  // BottomNavigationBarItem(
-                  //   icon: new Icon(Icons.notifications_none),
-                  //   title: new Text('Notification'),
-                  // ),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.mail), title: Text('Message'))
-                ],
-              )
-            : Container(
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
+        child: BottomNavigationBar(
+          currentIndex:
+              bottom_navbar_index, // this will be set when a new tab is tapped
+          items: [
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.home),
+              title: new Text(''),
+            ),
+            new BottomNavigationBarItem(
+              icon: new Icon(
+                Icons.search,
               ),
+              title: new Text(''),
+            ),
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.notifications_none),
+              title: new Text(''),
+            ),
+            // new BottomNavigationBarItem(
+            //   icon: new Icon(Icons.mail),
+            //   title: new Text('Message'),
+            // ),
+          ],
+        ),
       ),
       body: body(),
 
