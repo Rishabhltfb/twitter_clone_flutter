@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       CircleAvatar(
                         radius: getDeviceHeight(context) * 0.025,
                         backgroundColor: Colors.transparent,
-                        backgroundImage: AssetImage(du.avatar),
+                        backgroundImage: NetworkImage(du.avatar),
                       ),
                     ],
                   )),

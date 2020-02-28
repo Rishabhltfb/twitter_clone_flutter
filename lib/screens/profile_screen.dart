@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/helpers/dimensions.dart';
+import 'package:scoped_model/scoped_model.dart';
 
+import '../scoped_models/main_scoped_model.dart';
 import 'package:twitter_clone/helpers/dummy_user.dart';
 
 class Profile_Screen extends StatefulWidget {
+  final MainModel model;
+
+  Profile_Screen(this.model);
+
   @override
   State<StatefulWidget> createState() {
-    return _Profile_Screen_State();
+    return _Profile_Screen_State(model);
   }
 }
 
 class _Profile_Screen_State extends State<Profile_Screen> {
+  final MainModel model;
+
+  _Profile_Screen_State(this.model);
   final DummyUser du = DummyUser();
   @override
   Widget build(BuildContext context) {
@@ -33,7 +42,7 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                         borderRadius: new BorderRadius.circular(30.0)),
                     textColor: Colors.grey,
                     child: Text('Edit Profile'),
-                    onPressed: null,
+                    onPressed: () => Navigator.pushNamed(context, '/error'),
                   ),
                   SizedBox(width: 10.0)
                 ],
@@ -149,6 +158,33 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                         )
                       ],
                     ),
+                    DefaultTabController(
+                      length: 4,
+                      child: Column(
+                        children: <Widget>[
+                          TabBar(
+                            tabs: <Widget>[
+                              Tab(
+                                text: 'Tweets',
+                              ),
+                              Tab(
+                                text: 'Tweets & replies',
+                              ),
+                              Tab(
+                                text: 'Media',
+                              ),
+                              Tab(
+                                text: 'Likes',
+                              ),
+                            ],
+                          ),
+                          // TabBarView(
+                          //   children: <Widget>[
+                          //   ],
+                          // ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -178,7 +214,7 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: getDeviceWidth(context) * 0.1,
-                      backgroundImage: AssetImage(du.avatar),
+                      backgroundImage: NetworkImage(du.avatar),
                     ),
                   ),
                 ],
@@ -194,7 +230,7 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   FloatingActionButton(
-                    onPressed: null,
+                    onPressed: () => model.login(),
                     backgroundColor: Theme.of(context).primaryColor,
                     child: Icon(Icons.add),
                   ),

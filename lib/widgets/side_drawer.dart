@@ -42,7 +42,7 @@ class SideDrawer extends StatelessWidget {
                         onTap: () => Navigator.pushNamed(context, '/profile'),
                         child: CircleAvatar(
                           backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage(du.avatar),
+                          backgroundImage: NetworkImage(du.avatar),
                           radius: 25.0,
                         ),
                       ),
@@ -111,7 +111,7 @@ class SideDrawer extends StatelessWidget {
               DrawerListItem(
                 tileIcon: Icons.view_list,
                 tileName: "Lists",
-                routeName: "/lists",
+                routeName: "/error",
               ),
               SizedBox(
                 height: 2,
@@ -119,7 +119,7 @@ class SideDrawer extends StatelessWidget {
               DrawerListItem(
                 tileIcon: Icons.chat,
                 tileName: "Topics",
-                routeName: "/topics",
+                routeName: "/error",
               ),
               SizedBox(
                 height: 2,
@@ -127,7 +127,7 @@ class SideDrawer extends StatelessWidget {
               DrawerListItem(
                 tileIcon: Icons.bookmark_border,
                 tileName: "Bookmarks",
-                routeName: "/bookmarks",
+                routeName: "/error",
               ),
               SizedBox(
                 height: 2,
@@ -135,7 +135,7 @@ class SideDrawer extends StatelessWidget {
               DrawerListItem(
                 tileIcon: Icons.assistant_photo,
                 tileName: "Moments",
-                routeName: "/moments",
+                routeName: "/error",
               ),
               SizedBox(
                 height: 2,
@@ -143,7 +143,7 @@ class SideDrawer extends StatelessWidget {
               Divider(thickness: 1),
               FlatButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/settings');
+                  Navigator.pushReplacementNamed(context, '/error');
                 },
                 splashColor: Colors.grey,
                 child: Container(
@@ -166,7 +166,7 @@ class SideDrawer extends StatelessWidget {
               ),
               FlatButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/help');
+                  Navigator.pushReplacementNamed(context, '/error');
                 },
                 splashColor: Colors.grey,
                 child: Container(

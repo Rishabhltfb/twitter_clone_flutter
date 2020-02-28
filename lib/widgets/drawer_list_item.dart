@@ -16,7 +16,7 @@ class DrawerListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, routeName);
+          Navigator.pushNamed(context, routeName);
         },
         splashColor: Colors.grey,
         child: Container(
