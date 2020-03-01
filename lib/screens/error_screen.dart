@@ -24,7 +24,8 @@ class ErrorScreen extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Text(
-                'This screen is under development.',
+                'This screen is under development.This screen is under development.This screen is under development.This screen is under development.This screen is under developmment.This screen is under development.This screen is under developmment.This screen is under development.This screen is under development.This screen is under development.This screen is under development.This screen is under development.',
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

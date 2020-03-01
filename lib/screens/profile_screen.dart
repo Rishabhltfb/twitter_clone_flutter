@@ -116,6 +116,7 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                         Icon(Icons.calendar_today),
                         Text(
                           ' Joined ' + du.dateOfJoining,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: getDeviceHeight(context) * 0.022,
                               fontWeight: FontWeight.w300),

@@ -24,17 +24,6 @@ class SideDrawer extends StatelessWidget {
               Container(
                 height: getViewportHeight(context) * 0.275,
                 child: DrawerHeader(
-                  // decoration: BoxDecoration(
-                  //   gradient: LinearGradient(
-                  //     colors: <Color>[Colors.cyan, Color(0xff5614B0)],
-                  //   ),
-                  //   boxShadow: <BoxShadow>[
-                  //     BoxShadow(
-                  //       blurRadius: 3,
-                  //     )
-                  //   ],
-                  //   color: Colors.red,
-                  // ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[

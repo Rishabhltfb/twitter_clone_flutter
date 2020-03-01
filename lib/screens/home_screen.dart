@@ -18,9 +18,9 @@ class _HomeScreenState extends State<HomeScreen> {
   ScrollController _scrollBottomBarController =
       new ScrollController(); // set controller on scrolling
   bool isScrollingDown = false;
-  // bool _show = true;
   int bottom_navbar_index = 0;
   final DummyUser du = DummyUser();
+  final DummyTweet dt = DummyTweet();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -63,28 +63,125 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget containterContent() {
     return Container(
-        height: getDeviceHeight(context) * 0.5,
-        margin: EdgeInsets.all(8.0),
-        width: MediaQuery.of(context).size.width - 100,
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: getDeviceHeight(context) * 0.24),
-            Center(
-              child: Center(
-                child: Text(
-                  'Tweets goes here',
-                  style: TextStyle(
-                    fontSize: 14.0,
-                  ),
-                ),
+      // height: getDeviceHeight(context) * 0.5,
+      // margin: EdgeInsets.all(8.0),
+      // color: Colors.amber,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              SizedBox(width: getDeviceWidth(context) * 0.07),
+              Icon(
+                Icons.share,
+                color: Colors.grey,
+                size: 12,
               ),
+              Text(
+                dt.optionalLine,
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+            ],
+          ), // Row for optional text like liked and retweeted
+          SizedBox(height: 5),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(dt.avatar),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Text(dt.name),
+                        Text(
+                          dt.username,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          dt.text,
+                          overflow: TextOverflow.fade,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
-            SizedBox(height: getDeviceHeight(context) * 0.2),
-            Divider(
-              thickness: 1,
-            )
-          ],
-        ));
+          ),
+
+          Row(
+            children: <Widget>[],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.chat,
+                      size: 15,
+                      color: Colors.grey,
+                    ),
+                    onPressed: null,
+                  ),
+                  Text(dt.comments.toString())
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.check_box_outline_blank,
+                      size: 15,
+                      color: Colors.grey,
+                    ),
+                    onPressed: null,
+                  ),
+                  Text(dt.retweets.toString())
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.favorite_border,
+                      size: 15,
+                      color: Colors.grey,
+                    ),
+                    onPressed: null,
+                  ),
+                  Text(dt.likes.toString())
+                ],
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.share,
+                  size: 15,
+                  color: Colors.grey,
+                ),
+                onPressed: null,
+              ),
+            ],
+          ),
+          Divider(
+            thickness: 1,
+          )
+        ],
+      ),
+    );
   }
 
   Widget body() {

@@ -15,3 +15,15 @@ class DummyUser {
   final String bio = 'Dreamer...';
   final String location = 'Aligarh, Uttar Pradesh';
 }
+
+class DummyTweet {
+  final String name = 'Rishabh Sharma ~';
+  final String username = '@Rishabh_ltfb';
+  final String text =
+      'Hello everyone this is my very first tweet on my new self made social media handle i.e Twitter Clone';
+  final String avatar = 'http://192.168.43.197:5000/uploads/rishabh.jpeg';
+  final int likes = 82;
+  final int retweets = 13;
+  final int comments = 29;
+  final String optionalLine = '  #KhushiyaanUnlock is trending';
+}
