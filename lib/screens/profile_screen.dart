@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/helpers/dimensions.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:twitter_clone/helpers/my_flutter_app_icons.dart';
 
 import '../scoped_models/main_scoped_model.dart';
 import 'package:twitter_clone/helpers/dummy_user.dart';
@@ -158,11 +159,19 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                         )
                       ],
                     ),
+                    SizedBox(
+                      height: getDeviceHeight(context) * 0.025,
+                    ),
                     DefaultTabController(
+                      initialIndex: 0,
                       length: 4,
                       child: Column(
                         children: <Widget>[
                           TabBar(
+                            labelColor: Colors.blue,
+                            unselectedLabelColor: Colors.blueGrey,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            labelPadding: EdgeInsets.symmetric(horizontal: 0.1),
                             tabs: <Widget>[
                               Tab(
                                 text: 'Tweets',
@@ -178,10 +187,6 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                               ),
                             ],
                           ),
-                          // TabBarView(
-                          //   children: <Widget>[
-                          //   ],
-                          // ),
                         ],
                       ),
                     ),
@@ -232,7 +237,7 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                   FloatingActionButton(
                     onPressed: () => model.login(),
                     backgroundColor: Theme.of(context).primaryColor,
-                    child: Icon(Icons.add),
+                    child: Icon(MyFlutterApp.feather),
                   ),
                   SizedBox(width: 15)
                 ],

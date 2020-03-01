@@ -36,7 +36,9 @@ class _MyAppState extends State<MyApp> {
       model: _model,
       child: MaterialApp(
         theme: ThemeData(
-            primaryColor: Color(0xff4494f1), accentColor: Colors.deepPurple),
+          primaryColor: Color(0xff4494f1),
+          accentColor: Colors.blue,
+        ),
         debugShowCheckedModeBanner: false,
         routes: {
           '/': (BuildContext context) => SplashPage(),

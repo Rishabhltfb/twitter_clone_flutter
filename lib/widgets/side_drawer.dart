@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/helpers/dimensions.dart';
 import 'package:twitter_clone/helpers/dummy_user.dart';
-// import 'package:twitter_clone/helpers/flutter_icons.dart';
+import 'package:twitter_clone/helpers/my_flutter_app_icons.dart';
 import 'dart:ui';
 
 import 'package:twitter_clone/widgets/drawer_list_item.dart';
@@ -39,7 +39,10 @@ class SideDrawer extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, '/profile'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, '/profile');
+                        },
                         child: CircleAvatar(
                           backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(du.avatar),
@@ -133,7 +136,7 @@ class SideDrawer extends StatelessWidget {
                 height: 2,
               ),
               DrawerListItem(
-                tileIcon: Icons.assistant_photo,
+                tileIcon: MyFlutterApp.thunder,
                 tileName: "Moments",
                 routeName: "/error",
               ),
@@ -143,7 +146,8 @@ class SideDrawer extends StatelessWidget {
               Divider(thickness: 1),
               FlatButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/error');
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/error');
                 },
                 splashColor: Colors.grey,
                 child: Container(
@@ -166,7 +170,8 @@ class SideDrawer extends StatelessWidget {
               ),
               FlatButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/error');
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/error');
                 },
                 splashColor: Colors.grey,
                 child: Container(
@@ -197,11 +202,11 @@ class SideDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Icon(
-                      Icons.bubble_chart,
+                      MyFlutterApp.lightbulb,
                       color: Theme.of(context).primaryColor,
                     ),
                     Icon(
-                      Icons.cast_connected,
+                      MyFlutterApp.qrcode_1,
                       color: Theme.of(context).primaryColor,
                     ),
                   ],
