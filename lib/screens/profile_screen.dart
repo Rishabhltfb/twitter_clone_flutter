@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/helpers/dimensions.dart';
-import 'package:scoped_model/scoped_model.dart';
+// import 'package:scoped_model/scoped_model.dart';
 import 'package:twitter_clone/helpers/my_flutter_app_icons.dart';
+// import 'package:twitter_clone/models/user.dart';
+// import 'package:intl/intl.dart';
+import '../api/keys.dart';
 
 import '../scoped_models/main_scoped_model.dart';
 import 'package:twitter_clone/helpers/dummy_user.dart';
@@ -19,9 +22,11 @@ class Profile_Screen extends StatefulWidget {
 
 class _Profile_Screen_State extends State<Profile_Screen> {
   final MainModel model;
+  final uri = ApiKeys.uri;
 
   _Profile_Screen_State(this.model);
   final DummyUser du = DummyUser();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +63,7 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                           width: 10,
                         ),
                         Text(
-                          du.name,
+                          model.authenticatedUser.name,
                           style: TextStyle(
                               fontSize: getDeviceHeight(context) * 0.035,
                               fontWeight: FontWeight.w800),
@@ -74,27 +79,63 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                           width: 10,
                         ),
                         Text(
-                          du.username,
+                          "@" + model.authenticatedUser.username,
                           style: TextStyle(
                               fontSize: getDeviceHeight(context) * 0.022,
                               fontWeight: FontWeight.w300),
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          du.bio,
-                          style: TextStyle(
-                            fontSize: getDeviceHeight(context) * 0.022,
+                    model.authenticatedUser.bio == ''
+                        ? Container()
+                        : SizedBox(
+                            height: 10,
                           ),
-                        )
+                    model.authenticatedUser.bio == ''
+                        ? Container()
+                        : Row(
+                            children: <Widget>[
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                model.authenticatedUser.bio,
+                                style: TextStyle(
+                                  fontSize: getDeviceHeight(context) * 0.022,
+                                ),
+                              )
+                            ],
+                          ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 10,
+                        ),
+                        // Icon(MyFlutterApp.balloon),
+                        // Text(
+                        //   ' Born ' + model.authenticatedUser.dateOfBirth,
+                        //   style: TextStyle(
+                        //       fontSize: getDeviceHeight(context) * 0.022,
+                        //       fontWeight: FontWeight.w300),
+                        // ),
+                        // SizedBox(width: 10),
+                        Icon(
+                          Icons.calendar_today,
+                          size: getDeviceHeight(context) * 0.022,
+                          color: Colors.grey,
+                        ),
+                        Container(
+                          child: Text(
+                            ' Joined ' + model.authenticatedUser.dateOfJoining,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: getDeviceHeight(context) * 0.022,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -105,34 +146,11 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                         SizedBox(
                           width: 10,
                         ),
-                        Icon(Icons.cake),
                         Text(
-                          ' Born ' + du.dateOfBirth,
-                          style: TextStyle(
-                              fontSize: getDeviceHeight(context) * 0.022,
-                              fontWeight: FontWeight.w300),
-                        ),
-                        SizedBox(width: 10),
-                        Icon(Icons.calendar_today),
-                        Text(
-                          ' Joined ' + du.dateOfJoining,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: getDeviceHeight(context) * 0.022,
-                              fontWeight: FontWeight.w300),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          du.followingsno.toString(),
+                          model.authenticatedUser.followings.length == null
+                              ? "0"
+                              : model.authenticatedUser.followings.length
+                                  .toString(),
                           style: TextStyle(
                               fontSize: getDeviceHeight(context) * 0.022,
                               fontWeight: FontWeight.w800),
@@ -147,7 +165,10 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                           width: 10,
                         ),
                         Text(
-                          du.followersno.toString(),
+                          model.authenticatedUser.followers.length == null
+                              ? "0"
+                              : model.authenticatedUser.followers.length
+                                  .toString(),
                           style: TextStyle(
                               fontSize: getDeviceHeight(context) * 0.022,
                               fontWeight: FontWeight.w800),
@@ -188,6 +209,9 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                               ),
                             ],
                           ),
+                          // TabBarView(
+                          //   children: <Widget>[],
+                          // )
                         ],
                       ),
                     ),
@@ -207,7 +231,9 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                     icon: Icon(Icons.arrow_back),
                     onPressed: () => Navigator.pop(context),
                   ),
-                  IconButton(icon: Icon(Icons.list), onPressed: () => {}),
+                  IconButton(
+                      icon: Icon(MyFlutterApp.points3),
+                      onPressed: () => Navigator.pushNamed(context, '/error')),
                 ],
               ),
               SizedBox(

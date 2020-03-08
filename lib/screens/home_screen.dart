@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+
+import '../scoped_models/main_scoped_model.dart';
+import 'package:twitter_clone/helpers/my_flutter_app_icons.dart';
 // import 'package:twitter_clone/helpers/my_flutter_app_icons.dart';
 import 'package:twitter_clone/widgets/side_drawer.dart';
 import 'package:twitter_clone/helpers/dimensions.dart';
 import 'package:twitter_clone/helpers/dummy_user.dart';
+import '../api/keys.dart';
 
 class HomeScreen extends StatefulWidget {
+  final MainModel model;
+
+  HomeScreen(this.model);
   @override
   State<StatefulWidget> createState() {
-    return _HomeScreenState();
+    return _HomeScreenState(model);
   }
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final MainModel model;
+  final uri = ApiKeys.uri;
+
+  _HomeScreenState(this.model);
   bool _showAppbar = true; //this is to show app bar
   ScrollController _scrollBottomBarController =
       new ScrollController(); // set controller on scrolling
@@ -61,10 +72,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  Widget containterContent() {
+  Widget containterContent(int index) {
     return Container(
       // height: getDeviceHeight(context) * 0.5,
-      // margin: EdgeInsets.all(8.0),
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
       // color: Colors.amber,
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -73,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               SizedBox(width: getDeviceWidth(context) * 0.07),
               Icon(
-                Icons.share,
+                Icons.favorite,
                 color: Colors.grey,
                 size: 12,
               ),
@@ -84,10 +95,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ), // Row for optional text like liked and retweeted
           SizedBox(height: 5),
-          Container(
-            child: Row(
-              children: <Widget>[
-                Column(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: getDeviceWidth(context) * 0.02),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     CircleAvatar(
@@ -96,29 +110,47 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                Column(
+              ),
+              Expanded(
+                child: Column(
                   children: <Widget>[
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(dt.name),
                         Text(
-                          dt.username,
+                          model.feedTweetsList[index].name,
+                          style: TextStyle(fontWeight: FontWeight.w900),
+                        ),
+                        Text(
+                          "@" + model.feedTweetsList[index].username,
+                          style: TextStyle(fontWeight: FontWeight.w300),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          model.feedTweetsList[index].date,
+                          style: TextStyle(fontWeight: FontWeight.w300),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          dt.text,
-                          overflow: TextOverflow.fade,
-                        ),
-                      ],
+                    SizedBox(height: getDeviceHeight(context) * 0.01),
+                    Text(
+                      model.feedTweetsList[index].tweetText,
+                      overflow: TextOverflow.clip,
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      // color: Colors.yellow,
+                      height: getDeviceHeight(context) * 0.2,
+                      width: getDeviceWidth(context) * 0.7,
+                      child: Image(
+                        image: AssetImage('assets/wallpaper.jpg'),
+                      ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
 
           Row(
@@ -131,26 +163,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: <Widget>[
                   IconButton(
                     icon: Icon(
-                      Icons.chat,
-                      size: 15,
+                      MyFlutterApp.comment,
+                      size: 18,
                       color: Colors.grey,
                     ),
                     onPressed: null,
                   ),
-                  Text(dt.comments.toString())
+                  Text(model.feedTweetsList[index].comments.length.toString())
                 ],
               ),
               Row(
                 children: <Widget>[
                   IconButton(
                     icon: Icon(
-                      Icons.check_box_outline_blank,
-                      size: 15,
+                      MyFlutterApp.retweet,
+                      size: 18,
                       color: Colors.grey,
                     ),
                     onPressed: null,
                   ),
-                  Text(dt.retweets.toString())
+                  Text(model.feedTweetsList[index].retweets.length.toString())
                 ],
               ),
               Row(
@@ -158,12 +190,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   IconButton(
                     icon: Icon(
                       Icons.favorite_border,
-                      size: 15,
+                      size: 18,
                       color: Colors.grey,
                     ),
                     onPressed: null,
                   ),
-                  Text(dt.likes.toString())
+                  Text(model.feedTweetsList[index].likes.length.toString())
                 ],
               ),
               IconButton(
@@ -185,25 +217,29 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget body() {
-    return ListView(
-      controller: _scrollBottomBarController,
-      children: <Widget>[
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-        containterContent(),
-      ],
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return containterContent(index);
+      },
+      itemCount: model.feedTweetsList.length,
+      // controller: _scrollBottomBarController,
+      // children: <Widget>[
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      //   containterContent(),
+      // ],
     );
   }
 
@@ -223,7 +259,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       CircleAvatar(
                         radius: getDeviceHeight(context) * 0.025,
                         backgroundColor: Colors.transparent,
-                        backgroundImage: NetworkImage(du.avatar),
+                        backgroundImage: NetworkImage(
+                          du.avatar,
+                        ),
                       ),
                     ],
                   )),
