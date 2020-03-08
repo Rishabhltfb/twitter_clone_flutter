@@ -63,7 +63,7 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                           width: 10,
                         ),
                         Text(
-                          model.authenticatedUser.name,
+                          model.getAuthenticatedUser.name,
                           style: TextStyle(
                               fontSize: getDeviceHeight(context) * 0.035,
                               fontWeight: FontWeight.w800),
@@ -79,19 +79,19 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                           width: 10,
                         ),
                         Text(
-                          "@" + model.authenticatedUser.username,
+                          "@" + model.getAuthenticatedUser.username,
                           style: TextStyle(
                               fontSize: getDeviceHeight(context) * 0.022,
                               fontWeight: FontWeight.w300),
                         )
                       ],
                     ),
-                    model.authenticatedUser.bio == ''
+                    model.getAuthenticatedUser.bio == ''
                         ? Container()
                         : SizedBox(
                             height: 10,
                           ),
-                    model.authenticatedUser.bio == ''
+                    model.getAuthenticatedUser.bio == ''
                         ? Container()
                         : Row(
                             children: <Widget>[
@@ -99,7 +99,7 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                                 width: 10,
                               ),
                               Text(
-                                model.authenticatedUser.bio,
+                                model.getAuthenticatedUser.bio,
                                 style: TextStyle(
                                   fontSize: getDeviceHeight(context) * 0.022,
                                 ),
@@ -115,11 +115,14 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                           width: 10,
                         ),
                         // Icon(MyFlutterApp.balloon),
-                        // Text(
-                        //   ' Born ' + model.authenticatedUser.dateOfBirth,
-                        //   style: TextStyle(
-                        //       fontSize: getDeviceHeight(context) * 0.022,
-                        //       fontWeight: FontWeight.w300),
+                        // Expanded(
+                        //   flex: 1,
+                        //   child: Text(
+                        //     ' Born ' + model.getAuthenticatedUser.dateOfBirth,
+                        //     style: TextStyle(
+                        //         fontSize: getDeviceHeight(context) * 0.022,
+                        //         fontWeight: FontWeight.w300),
+                        //   ),
                         // ),
                         // SizedBox(width: 10),
                         Icon(
@@ -127,9 +130,11 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                           size: getDeviceHeight(context) * 0.022,
                           color: Colors.grey,
                         ),
-                        Container(
+                        Expanded(
+                          flex: 1,
                           child: Text(
-                            ' Joined ' + model.authenticatedUser.dateOfJoining,
+                            ' Joined ' +
+                                model.getAuthenticatedUser.dateOfJoining,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: getDeviceHeight(context) * 0.022,
@@ -147,9 +152,9 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                           width: 10,
                         ),
                         Text(
-                          model.authenticatedUser.followings.length == null
+                          model.getAuthenticatedUser.followings.length == null
                               ? "0"
-                              : model.authenticatedUser.followings.length
+                              : model.getAuthenticatedUser.followings.length
                                   .toString(),
                           style: TextStyle(
                               fontSize: getDeviceHeight(context) * 0.022,
@@ -165,9 +170,9 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                           width: 10,
                         ),
                         Text(
-                          model.authenticatedUser.followers.length == null
+                          model.getAuthenticatedUser.followers.length == null
                               ? "0"
-                              : model.authenticatedUser.followers.length
+                              : model.getAuthenticatedUser.followers.length
                                   .toString(),
                           style: TextStyle(
                               fontSize: getDeviceHeight(context) * 0.022,

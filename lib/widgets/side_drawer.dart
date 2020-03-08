@@ -60,12 +60,12 @@ class SideDrawer extends StatelessWidget {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          model.authenticatedUser.username,
+                          '@' + model.authenticatedUser.username,
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               color: Colors.black87,
                               fontFamily: "Raleway",
-                              fontWeight: FontWeight.w100,
+                              fontWeight: FontWeight.w300,
                               fontSize: getViewportHeight(context) * 0.022),
                         ),
                         SizedBox(height: 10),
@@ -82,7 +82,7 @@ class SideDrawer extends StatelessWidget {
                               "  Following",
                               style: TextStyle(
                                   color: Colors.black87,
-                                  fontWeight: FontWeight.w100),
+                                  fontWeight: FontWeight.w300),
                             ),
                             SizedBox(width: 15.0),
                             Text(
@@ -96,7 +96,7 @@ class SideDrawer extends StatelessWidget {
                               "  Followers",
                               style: TextStyle(
                                   color: Colors.black87,
-                                  fontWeight: FontWeight.w100),
+                                  fontWeight: FontWeight.w300),
                             ),
                           ],
                         ),

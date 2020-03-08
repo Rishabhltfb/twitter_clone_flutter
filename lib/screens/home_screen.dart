@@ -4,7 +4,6 @@ import 'package:flutter/scheduler.dart';
 
 import '../scoped_models/main_scoped_model.dart';
 import 'package:twitter_clone/helpers/my_flutter_app_icons.dart';
-// import 'package:twitter_clone/helpers/my_flutter_app_icons.dart';
 import 'package:twitter_clone/widgets/side_drawer.dart';
 import 'package:twitter_clone/helpers/dimensions.dart';
 import 'package:twitter_clone/helpers/dummy_user.dart';
@@ -74,9 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget containterContent(int index) {
     return Container(
-      // height: getDeviceHeight(context) * 0.5,
       margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
-      // color: Colors.amber,
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: <Widget>[
@@ -117,19 +114,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          model.feedTweetsList[index].name,
-                          style: TextStyle(fontWeight: FontWeight.w900),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            model.feedTweetsList[index].name,
+                            style: TextStyle(fontWeight: FontWeight.w900),
+                          ),
                         ),
-                        Text(
-                          "@" + model.feedTweetsList[index].username,
-                          style: TextStyle(fontWeight: FontWeight.w300),
-                          overflow: TextOverflow.ellipsis,
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            "@" + model.feedTweetsList[index].username,
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        Text(
-                          model.feedTweetsList[index].date,
-                          style: TextStyle(fontWeight: FontWeight.w300),
-                          overflow: TextOverflow.ellipsis,
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            model.feedTweetsList[index].date,
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
@@ -217,29 +223,36 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget body() {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return containterContent(index);
-      },
-      itemCount: model.feedTweetsList.length,
-      // controller: _scrollBottomBarController,
-      // children: <Widget>[
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      //   containterContent(),
-      // ],
+    return Stack(
+      children: <Widget>[
+        ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return containterContent(index);
+          },
+          itemCount: model.feedTweetsList.length,
+          controller: _scrollBottomBarController,
+        ),
+        Column(
+          children: <Widget>[
+            SizedBox(
+              height: isScrollingDown
+                  ? getDeviceHeight(context) * 0.78
+                  : getDeviceHeight(context) * 0.70,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                FloatingActionButton(
+                  onPressed: () => {},
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: Icon(MyFlutterApp.feather),
+                ),
+                SizedBox(width: 15)
+              ],
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -252,23 +265,38 @@ class _HomeScreenState extends State<HomeScreen> {
           ? AppBar(
               backgroundColor: Colors.white,
               leading: GestureDetector(
-                  onTap: () => _scaffoldKey.currentState.openDrawer(),
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(width: 10.0),
-                      CircleAvatar(
-                        radius: getDeviceHeight(context) * 0.025,
-                        backgroundColor: Colors.transparent,
-                        backgroundImage: NetworkImage(
-                          du.avatar,
-                        ),
+                onTap: () => _scaffoldKey.currentState.openDrawer(),
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(width: 10),
+                    CircleAvatar(
+                      radius: getDeviceHeight(context) * 0.025,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(
+                        du.avatar,
                       ),
-                    ],
-                  )),
-              title: Text(
-                'Home',
-                style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
               ),
+              actions: <Widget>[
+                IconButton(
+                    icon: Icon(
+                      MyFlutterApp.stars,
+                      color: Theme.of(context).primaryColor,
+                      size: getDeviceHeight(context) * 0.05,
+                    ),
+                    onPressed: null),
+              ],
+              title: GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/home'),
+                child: Image.asset(
+                  'assets/icon.png',
+                  color: Theme.of(context).primaryColor,
+                  height: getDeviceHeight(context) * 0.06,
+                ),
+              ),
+              centerTitle: true,
             )
           : PreferredSize(
               child: Container(),
@@ -278,33 +306,42 @@ class _HomeScreenState extends State<HomeScreen> {
         height: getDeviceHeight(context) * 0.09,
         width: MediaQuery.of(context).size.width,
         child: BottomNavigationBar(
+          onTap: (index) {
+            setState(() {
+              bottom_navbar_index = index;
+            });
+          },
+          unselectedItemColor: Colors.blueGrey,
+          selectedItemColor: Theme.of(context).primaryColor,
+          iconSize: getDeviceHeight(context) * 0.04,
           currentIndex:
               bottom_navbar_index, // this will be set when a new tab is tapped
           items: [
-            new BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: new Icon(Icons.home),
-              title: new Text(''),
+              title: new Text('', style: TextStyle(fontSize: 0)),
             ),
-            new BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: new Icon(
                 Icons.search,
               ),
-              title: new Text(''),
+              title: new Text('', style: TextStyle(fontSize: 0)),
             ),
-            new BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: new Icon(Icons.notifications_none),
-              title: new Text(''),
+              title: new Text('', style: TextStyle(fontSize: 0)),
             ),
-            // new BottomNavigationBarItem(
-            //   icon: new Icon(Icons.mail),
-            //   title: new Text('Message'),
-            // ),
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.mail),
+              title: new Text(
+                '',
+                style: TextStyle(fontSize: 0),
+              ),
+            ),
           ],
         ),
       ),
       body: body(),
-
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
