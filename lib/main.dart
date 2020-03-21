@@ -6,8 +6,8 @@ import './screens/home_screen.dart';
 import './screens/splash_screen.dart';
 import './screens/profile_screen.dart';
 import './screens/error_screen.dart';
-// import './screens/error_screen.dart';
-// import './screens/auth_screen.dart';
+import './screens/compose_tweet_screen.dart';
+import './screens/testing_screen.dart';
 import './scoped_models/main_scoped_model.dart';
 
 void main() {
@@ -25,12 +25,20 @@ class _MyAppState extends State<MyApp> {
   // bool _isAuthenticated = false;
 
   @override
+  void initState() {
+    _model.login();
+    // _model.getUsers();
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(
         theme: ThemeData(
-          primaryColor: Color(0xff4494f1),
+          primaryColor: Color(0xff00ACEE),
           accentColor: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
@@ -40,6 +48,8 @@ class _MyAppState extends State<MyApp> {
           '/home': (BuildContext context) => HomeScreen(_model),
           '/profile': (BuildContext context) => Profile_Screen(_model),
           '/error': (BuildContext context) => ErrorScreen(),
+          '/tweet': (BuildContext context) => ComposeTweet(_model),
+          '/test': (BuildContext context) => TestScreen(_model),
           // '/new': (BuildContext context) => NewScreen(),
           // '/err': (BuildContext context) => ErrorScreen(),
         },

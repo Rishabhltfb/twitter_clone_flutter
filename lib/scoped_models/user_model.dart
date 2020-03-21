@@ -6,33 +6,56 @@ import '../models/user.dart';
 import './connected_scoped_model.dart';
 
 class UserModel extends ConnectedModel {
+  User authenticatedUser;
   User get getAuthenticatedUser {
     return authenticatedUser;
   }
 
-  // void setAuthenticatedUser(String userid) {}
+  Future<Null> getUsers() async {
+    isLoading = true;
+    notifyListeners();
+    print('Inside get : ' + isLoading.toString());
+    try {
+      http.Response response = await http.get('${uri}api/users');
+      if (response.statusCode == 200) {
+        print(response);
+      }
+    } catch (error) {
+      print("Error in login:  " + error.toString());
+      return;
+    }
+  }
 
   Future<Null> login() async {
+    isLoading = true;
+    notifyListeners();
+    print('Inside login : ' + isLoading.toString());
     Map<String, dynamic> req = {
-      'email': 'rjhacker0403@gmail.com',
+      'email': 'rishabh@email.com',
       'password': '12345'
     };
-    return await http.post('${uri}api/users/login',
-        body: json.encode(req),
-        headers: {
-          'Content-Type': 'application/json'
-        }).then<Null>((http.Response response) {
+    try {
+      http.Response response = await http.post('${uri}api/users/login',
+          body: json.encode(req),
+          headers: {'Content-Type': 'application/json'});
       if (response.statusCode == 200) {
         final Map<String, dynamic> res = json.decode(response.body);
-        setAuthenticatedUser(res['userId'], res['token']);
+        await setAuthenticatedUser(res['userId'], res['token']);
+        isLoading = false;
+        notifyListeners();
       }
-    }).catchError((error) {
-      print("Fetch Authenticated User Error: ${error.toString()}");
+    } catch (error) {
+      print("Error in login:  " + error.toString());
+      isLoading = false;
+      notifyListeners();
       return;
-    });
+    }
   }
 
   Future<Null> setAuthenticatedUser(String userId, String token) async {
+    // isLoading = true;
+    // notifyListeners();
+    print('Inside setAuthenticatedUser : ' + isLoading.toString());
     return await http
         .get(
       '${uri}api/users/$userId',
@@ -40,7 +63,6 @@ class UserModel extends ConnectedModel {
         .then<Null>((http.Response response) {
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = json.decode(response.body)['user'];
-        // print(responseData);
         User user = new User(
             userId: responseData['_id'],
             token: token,
@@ -57,8 +79,12 @@ class UserModel extends ConnectedModel {
             phone: '',
             username: responseData['username']);
         authenticatedUser = user;
+        // isLoading = false;
+        // notifyListeners();
       }
     }).catchError((error) {
+      // isLoading = false;
+      // notifyListeners();
       print("Fetch Authenticated User Error: ${error.toString()}");
       return;
     });

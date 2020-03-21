@@ -28,6 +28,10 @@ dependencies:
   shared_preferences: ^0.5.6
   rxdart: ^0.23.1
   intl: ^0.16.1
+  progressive_image: ^1.0.1
+  image_picker: ^0.6.3+4
+  dio: ^3.0.9
+  mime: ^0.9.6+3
 
 dev_dependencies:
   flutter_test:

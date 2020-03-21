@@ -30,80 +30,89 @@ class SideDrawer extends StatelessWidget {
                 SizedBox(
                   height: getDeviceHeight(context) * 0.025,
                 ),
-                Container(
-                  height: getViewportHeight(context) * 0.275,
-                  child: DrawerHeader(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.pushNamed(context, '/profile');
-                          },
-                          child: CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            backgroundImage:
-                                NetworkImage(uri + 'uploads/rishabh.jpeg'),
-                            radius: 25.0,
+                model.isLoading
+                    ? CircularProgressIndicator()
+                    : Container(
+                        height: getViewportHeight(context) * 0.275,
+                        child: DrawerHeader(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, '/profile');
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: FadeInImage.assetNetwork(
+                                    height: getDeviceHeight(context) * 0.08,
+                                    fadeInCurve: Curves.easeIn,
+                                    placeholder: 'assets/avatar.png',
+                                    image: uri +
+                                        model.parseImage(
+                                            model.getAuthenticatedUser.avatar),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 15),
+                              Text(
+                                model.authenticatedUser.name,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "Raleway",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize:
+                                        getViewportHeight(context) * 0.025),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                '@' + model.authenticatedUser.username,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.black87,
+                                    fontFamily: "Raleway",
+                                    fontWeight: FontWeight.w300,
+                                    fontSize:
+                                        getViewportHeight(context) * 0.022),
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    model.authenticatedUser.followings.length
+                                        .toString(),
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    "  Following",
+                                    style: TextStyle(
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                  SizedBox(width: 15.0),
+                                  Text(
+                                    model.authenticatedUser.followers.length
+                                        .toString(),
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    "  Followers",
+                                    style: TextStyle(
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: 15),
-                        Text(
-                          model.authenticatedUser.name,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w700,
-                              fontSize: getViewportHeight(context) * 0.025),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          '@' + model.authenticatedUser.username,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w300,
-                              fontSize: getViewportHeight(context) * 0.022),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              model.authenticatedUser.followings.length
-                                  .toString(),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              "  Following",
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            SizedBox(width: 15.0),
-                            Text(
-                              model.authenticatedUser.followers.length
-                                  .toString(),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              "  Followers",
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
                 DrawerListItem(
                   tileIcon: Icons.perm_identity,
                   tileName: "Profile",

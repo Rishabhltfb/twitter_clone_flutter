@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_clone/helpers/dimensions.dart';
-// import 'package:scoped_model/scoped_model.dart';
 import 'package:twitter_clone/helpers/my_flutter_app_icons.dart';
-// import 'package:twitter_clone/models/user.dart';
-// import 'package:intl/intl.dart';
 import '../api/keys.dart';
 
 import '../scoped_models/main_scoped_model.dart';
-import 'package:twitter_clone/helpers/dummy_user.dart';
+import '../widgets/tweets.dart';
 
 class Profile_Screen extends StatefulWidget {
   final MainModel model;
@@ -20,12 +17,39 @@ class Profile_Screen extends StatefulWidget {
   }
 }
 
-class _Profile_Screen_State extends State<Profile_Screen> {
+class _Profile_Screen_State extends State<Profile_Screen>
+    with TickerProviderStateMixin {
   final MainModel model;
   final uri = ApiKeys.uri;
 
   _Profile_Screen_State(this.model);
-  final DummyUser du = DummyUser();
+
+  TabController _tabController;
+  List<Tab> tabList = List();
+  @override
+  void initState() {
+    tabList.add(new Tab(
+      text: 'Overview',
+    ));
+    tabList.add(new Tab(
+      text: 'Workouts',
+    ));
+    tabList.add(new Tab(
+      text: 'Latest',
+    ));
+    tabList.add(new Tab(
+      text: 'Newest',
+    ));
+    _tabController =
+        new TabController(vsync: this, length: tabList.length, initialIndex: 0);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +78,6 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                 ],
               ),
               Container(
-                // color: Colors.yellow,
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -189,34 +212,64 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                     SizedBox(
                       height: getDeviceHeight(context) * 0.025,
                     ),
-                    DefaultTabController(
-                      initialIndex: 0,
-                      length: 4,
-                      child: Column(
-                        children: <Widget>[
-                          TabBar(
-                            labelColor: Colors.blue,
-                            unselectedLabelColor: Colors.blueGrey,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            labelPadding: EdgeInsets.symmetric(horizontal: 0.1),
-                            tabs: <Widget>[
-                              Tab(
-                                text: 'Tweets',
-                              ),
-                              Tab(
-                                text: 'Tweets & replies',
-                              ),
-                              Tab(
-                                text: 'Media',
-                              ),
-                              Tab(
-                                text: 'Likes',
-                              ),
-                            ],
+                    new Container(
+                      child: new TabBar(
+                        controller: _tabController,
+                        labelColor: Colors.blue,
+                        unselectedLabelColor: Colors.blueGrey,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        labelPadding: EdgeInsets.symmetric(horizontal: 0.1),
+                        tabs: <Widget>[
+                          Tab(
+                            text: 'Tweets',
                           ),
-                          // TabBarView(
-                          //   children: <Widget>[],
-                          // )
+                          Tab(
+                            text: 'Tweets & replies',
+                          ),
+                          Tab(
+                            text: 'Media',
+                          ),
+                          Tab(
+                            text: 'Likes',
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      height: getDeviceHeight(context) * 0.45,
+                      child: new TabBarView(
+                        controller: _tabController,
+                        children: <Widget>[
+                          ListView.builder(
+                            itemBuilder: (BuildContext context, int index) {
+                              return TweetContent(index, model);
+                            },
+                            itemCount: model.feedTweetsList.length,
+                          ),
+                          ListView.builder(
+                            itemBuilder: (BuildContext context, int index) {
+                              return TweetContent(index, model);
+                            },
+                            itemCount: model.feedTweetsList.length,
+                          ),
+                          Container(
+                            color: Colors.blueGrey[100],
+                            child: Center(
+                              child: Text(
+                                'You haven\'t Tweeted any photos or videos yet',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: getDeviceWidth(context) * 0.08,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          ListView.builder(
+                            itemBuilder: (BuildContext context, int index) {
+                              return TweetContent(index, model);
+                            },
+                            itemCount: model.feedTweetsList.length,
+                          ),
                         ],
                       ),
                     ),
@@ -248,10 +301,15 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                 children: <Widget>[
                   SizedBox(width: 10),
                   Container(
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: getDeviceWidth(context) * 0.1,
-                      backgroundImage: NetworkImage(du.avatar),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: FadeInImage.assetNetwork(
+                        height: getDeviceWidth(context) * 0.22,
+                        fadeInCurve: Curves.easeIn,
+                        placeholder: 'assets/avatar.png',
+                        image: uri +
+                            model.parseImage(model.getAuthenticatedUser.avatar),
+                      ),
                     ),
                   ),
                 ],
@@ -267,7 +325,7 @@ class _Profile_Screen_State extends State<Profile_Screen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   FloatingActionButton(
-                    onPressed: () => model.login(),
+                    onPressed: () => print(model.authenticatedUser.token),
                     backgroundColor: Theme.of(context).primaryColor,
                     child: Icon(MyFlutterApp.feather),
                   ),
