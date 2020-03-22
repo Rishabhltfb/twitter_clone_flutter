@@ -7,19 +7,30 @@ import 'package:http/http.dart' as http;
 import './connected_scoped_model.dart';
 
 class UtilityModel extends ConnectedModel {
-  Future<Null> imageUpload(String id, File image) async {
+  Future<Null> imageUpload(String id, File image, String mode) async {
     isLoading = true;
     notifyListeners();
     print('Inside imageUpload : ');
     // Find the mime type of the selected file by looking at the header bytes of the file
     final mimeTypeData =
         lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+    var imageUploadRequest = null;
+    var file = null;
     // Intilize the multipart request
-    final imageUploadRequest = http.MultipartRequest(
-        'PATCH', Uri.parse('${uri}api/users/avatar/${id}'));
-    // Attach the file in the request
-    final file = await http.MultipartFile.fromPath('avatar', image.path,
-        contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+    if (mode == 'tweet') {
+      imageUploadRequest = http.MultipartRequest(
+          'PATCH', Uri.parse('${uri}api/tweets/media/${id}'));
+      // Attach the file in the request
+      file = await http.MultipartFile.fromPath('mediaLinks', image.path,
+          contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+    } else {
+      imageUploadRequest = http.MultipartRequest(
+          'PATCH', Uri.parse('${uri}api/users/avatar/${id}'));
+      // Attach the file in the request
+      file = await http.MultipartFile.fromPath('avatar', image.path,
+          contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+    }
+
     // Explicitly pass the extension of the image with request body
     // Since image_picker has some bugs due which it mixes up
     // image extension with file name like this filenamejpge
@@ -54,5 +65,17 @@ class UtilityModel extends ConnectedModel {
       avatar = imageAddress;
     }
     return avatar;
+  }
+
+  void setImage(File image) {
+    print('Inside setImage' + image.toString());
+    file = image;
+    print(file);
+    print('setImageExit');
+  }
+
+  File getImage() {
+    print('Inside get Image: ' + file.toString());
+    return file;
   }
 }

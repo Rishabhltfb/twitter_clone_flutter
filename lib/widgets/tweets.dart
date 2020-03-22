@@ -119,9 +119,23 @@ class _TweetContentState extends State<TweetContent> {
                       // color: Colors.yellow,
                       height: getDeviceHeight(context) * 0.2,
                       width: getDeviceWidth(context) * 0.7,
-                      child: Image(
-                        image: AssetImage('assets/wallpaper.jpg'),
-                      ),
+                      child: model.feedTweetsList[index].mediaLinks == ''
+                          ? Image(
+                              image: AssetImage('assets/wallpaper.jpg'),
+                            )
+                          : ProgressiveImage.assetNetwork(
+                              placeholder:
+                                  'assets/wallpaper.jpg', // gifs can be used
+                              thumbnail: uri +
+                                  model.parseImage(
+                                      model.feedTweetsList[index].mediaLinks),
+                              image: uri +
+                                  model.parseImage(
+                                      model.feedTweetsList[index].mediaLinks),
+                              height: getDeviceHeight(context) * 0.2,
+                              width: getDeviceWidth(context) * 0.6,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ],
                 ),

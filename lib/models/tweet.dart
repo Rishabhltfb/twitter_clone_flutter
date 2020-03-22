@@ -6,6 +6,7 @@ class Tweet {
   final String avatar;
   final String tweetId;
   final String userId;
+  final String mediaLinks;
   final String tweetText;
   final List mentions;
   final List hashtags;
@@ -19,6 +20,7 @@ class Tweet {
     @required this.username,
     @required this.avatar,
     @required this.userId,
+    @required this.mediaLinks,
     @required this.tweetId,
     @required this.tweetText,
     @required this.mentions,

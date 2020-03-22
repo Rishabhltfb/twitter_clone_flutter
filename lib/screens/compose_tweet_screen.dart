@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../helpers/dimensions.dart';
 import '../api/keys.dart';
 import '../scoped_models/main_scoped_model.dart';
+import './testing_screen.dart';
 
 class ComposeTweet extends StatefulWidget {
   final MainModel model;
@@ -64,12 +64,15 @@ class _ComposeTweetState extends State<ComposeTweet> {
       return;
     }
     _formKey.currentState.save();
+
     model
         .composeTweet(_formData['tweet'], model.getAuthenticatedUser.token)
         .then(
       (String tweetId) {
         if (tweetId != null) {
-          model.imageUpload(tweetId, image)
+          TestScreen(model).createState();
+          model.imageUpload(tweetId, model.getImage(), 'tweet');
+          model.setImage(null);
           Navigator.pushReplacementNamed(context, '/home');
         } else {
           showDialog(
@@ -92,15 +95,6 @@ class _ComposeTweetState extends State<ComposeTweet> {
     );
   }
 
-  Future getImage(BuildContext context, ImageSource source) async {
-    var image = await ImagePicker.pickImage(source: source, maxWidth: 400);
-
-    setState(() {
-      _image = image;
-      model.imageUpload('5e5955f3788635186080dcff', _image);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,50 +111,58 @@ class _ComposeTweetState extends State<ComposeTweet> {
             padding: EdgeInsets.all(5),
             color: Theme.of(context).primaryColor,
             onPressed: () => _submitForm(),
-            splashColor: Colors.red,
+            // splashColor: Colors.red,
             child: Text('Tweet'),
             textColor: Colors.white,
           ),
         ],
       ),
       body: Container(
+        // color: Colors.red,
         height: getDeviceHeight(context),
         color: Colors.white,
-        child: Container(
-          child: Row(
-            children: <Widget>[
-              Column(
+        child: Column(
+          children: <Widget>[
+            Container(
+              // height: getDeviceHeight(context) * 0.4,
+              child: Row(
                 children: <Widget>[
-                  Row(
+                  Column(
                     children: <Widget>[
-                      SizedBox(
-                        width: 10,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: FadeInImage.assetNetwork(
-                          height: getDeviceHeight(context) * 0.05,
-                          fadeInCurve: Curves.easeIn,
-                          placeholder: 'assets/avatar.png',
-                          image: uri +
-                              model.parseImage(
-                                  model.getAuthenticatedUser.avatar),
-                        ),
+                      Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: FadeInImage.assetNetwork(
+                              height: getDeviceHeight(context) * 0.05,
+                              fadeInCurve: Curves.easeIn,
+                              placeholder: 'assets/avatar.png',
+                              image: uri +
+                                  model.parseImage(
+                                      model.getAuthenticatedUser.avatar),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        _buildTweetTextField(),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    _buildTweetTextField(),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: getDeviceHeight(context) * 0.04),
+            TestScreen(model),
+          ],
         ),
       ),
     );

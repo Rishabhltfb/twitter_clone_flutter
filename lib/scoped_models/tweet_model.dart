@@ -31,6 +31,7 @@ class TweetModel extends ConnectedModel {
             name: entryData['name'],
             userId: entryData['user'],
             tweetText: entryData['text'],
+            mediaLinks: entryData['mediaLinks'],
             mentions: entryData['mentions'],
             hashtags: entryData['hashtags'],
             username: entryData['username'],
@@ -92,59 +93,4 @@ class TweetModel extends ConnectedModel {
       return null;
     }
   }
-
-  // Future<Null> imageUpload(String userId, File file) async {
-  //   isLoading = true;
-  //   notifyListeners();
-  //   print('Inside imageUpload : ');
-  //   try {
-  //     var response =
-  //         await http.patch('${uri}api/users/avatar/${userId}', body: );
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> res = json.decode(response.);
-  //       print(res);
-  //       isLoading = false;
-  //       notifyListeners();
-  //     }
-  //   } catch (error) {
-  //     print("Error in imageUpload:  " + error.toString());
-  //     isLoading = false;
-  //     notifyListeners();
-  //     return;
-  //   }
-  // }
-
-  // Future<Null> imageUpload(String userId, File image) async {
-  //   isLoading = true;
-  //   notifyListeners();
-  //   print('Inside imageUpload : ');
-  //   // Find the mime type of the selected file by looking at the header bytes of the file
-  //   final mimeTypeData =
-  //       lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
-  //   // Intilize the multipart request
-  //   final imageUploadRequest = http.MultipartRequest(
-  //       'PATCH', Uri.parse('${uri}api/users/avatar/${userId}'));
-  //   // Attach the file in the request
-  //   final file = await http.MultipartFile.fromPath('avatar', image.path,
-  //       contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
-  //   // Explicitly pass the extension of the image with request body
-  //   // Since image_picker has some bugs due which it mixes up
-  //   // image extension with file name like this filenamejpge
-  //   // Which creates some problem at the server side to manage
-  //   // or verify the file extension
-  //   imageUploadRequest.fields['ext'] = mimeTypeData[1];
-  //   imageUploadRequest.files.add(file);
-  //   try {
-  //     final streamedResponse = await imageUploadRequest.send();
-  //     final response = await http.Response.fromStream(streamedResponse);
-  //     print(response.statusCode);
-  //     if (response.statusCode != 200 && response.statusCode != 201) {
-  //       final Map<String, dynamic> responseData = json.decode(response.body);
-  //       print(responseData);
-  //     }
-  //   } catch (error) {
-  //     print('Error in uploading image: ' + error);
-  //     return null;
-  //   }
-  // }
 }

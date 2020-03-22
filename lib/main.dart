@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           '/profile': (BuildContext context) => Profile_Screen(_model),
           '/error': (BuildContext context) => ErrorScreen(),
           '/tweet': (BuildContext context) => ComposeTweet(_model),
-          '/test': (BuildContext context) => TestScreen(_model),
+          // '/test': (BuildContext context) => TestScreen(_model),
           // '/new': (BuildContext context) => NewScreen(),
           // '/err': (BuildContext context) => ErrorScreen(),
         },
