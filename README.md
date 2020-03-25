@@ -1,6 +1,7 @@
 # twitter_clone
 
-A new Flutter project.
+A new Flutter project for cloning the original twitter app as reflected in project name.
+App uses node js based Api to fetch all data stored on mongoDb atlas.
 
 ## Getting Started
 
